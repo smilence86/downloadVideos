@@ -83,6 +83,8 @@ class Crawler {
 
             if (index < startFromLine) {
                 console.log(`skip line: ${index}`);
+                lastLine = line;
+                ++index;
                 continue;
             }
 
