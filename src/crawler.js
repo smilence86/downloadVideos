@@ -81,7 +81,7 @@ class Crawler {
         let index = 1;
         for await (const line of file.readLines()) {
 
-            if (index < startFromLine) {
+            if (index < this.startFromLine) {
                 console.log(`skip line: ${index}`);
                 lastLine = line;
                 ++index;
