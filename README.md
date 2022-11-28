@@ -13,7 +13,9 @@ nvm install v18.12.1
 git clone https://github.com/smilence86/downloadVideos.git
 ## install packages
 cd downloadVideos
+
 mkdir -p videoList/Adult
+
 npm install
 
 ## start download
