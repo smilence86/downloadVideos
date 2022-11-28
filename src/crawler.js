@@ -1,6 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+import config from 'config';
 import jsonfile from 'jsonfile';
 import superagent from 'superagent';
 import { wechat } from './notifier/wechat.js';
@@ -22,6 +23,11 @@ class Crawler {
 
         this.downloadFolder = this.getDownloadFolder();
         
+        this.startFromLine = this.getStartFromLine();
+    }
+
+    getStartFromLine() {
+        return config.get('startFromLine');
     }
 
     getDownloadFolder() {
@@ -72,10 +78,15 @@ class Crawler {
         const file = await open(filePath);
         const totalLines = await this.totalLines(filePath);
         let lastLine = '';
-        let index = 0;
+        let index = 1;
         for await (const line of file.readLines()) {
 
-            console.log(`Processing: ${++index}/${totalLines}, ${line}`);
+            if (index < startFromLine) {
+                console.log(`skip line: ${index}`);
+                continue;
+            }
+
+            console.log(`Processing: ${index}/${totalLines}, ${line}`);
 
             if (line.startsWith('http')) {
                 const [ group, name ] = this.parseFileName(lastLine, index);
@@ -83,6 +94,7 @@ class Crawler {
                 await this.convertM3u8ToMp4(line, `${videoPath}.mp4`);
             }
             lastLine = line;
+            ++index;
         }
     }
 
