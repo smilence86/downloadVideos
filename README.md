@@ -28,7 +28,7 @@ cd /path/downloadVideos && nohup node index.js > ~/crawler.log 2>&1 &
 
 tail -f ~/crawler.log
 
-watch -n 1 ls -lh videoList/Adult/
+watch -n 1 ls -lht videoList/Adult/
 ```
 
 ## warning
