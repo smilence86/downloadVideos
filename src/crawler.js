@@ -92,6 +92,7 @@ class Crawler {
         try {
             group = line.split('"')[1];
             name = line.substring(line.lastIndexOf(',') + 1);
+            name = name.replace(/\//g, '-');
         } catch (err) {
             console.log(err.stack || err);
         }
@@ -112,9 +113,21 @@ class Crawler {
         });
     }
 
-    async convertM3u8ToMp4(url, filePath) {
+    async convertM3u8ToMp4(url, filePath, retry = 0, retryMax = 5) {
         const command = `ffmpeg -i "${url}" -bsf:a aac_adtstoasc -vcodec copy -c copy -crf 50 "${filePath}"`;
-        await this.execShell(command);
+        try {
+            await this.execShell(command);
+        } catch (err) {
+            console.log(err.stack || err);
+
+            ++retry;
+
+            console.log(`重试第${retry}次，url: ${url}`);
+
+            if (retry <= retryMax) {
+                await this.convertM3u8ToMp4(url, filePath, retry, retryMax);
+            }
+        }
     }
 
     async execShell(cmd) {
