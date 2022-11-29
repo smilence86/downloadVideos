@@ -38,11 +38,13 @@ class Crawler {
 
     async start() {
 
+        console.log(`Start from line: ${this.startFromLine}`);
+
         console.time(`总耗时：`);
 
         await Bluebird.map(this.sources, async (pageUrl) => {
 
-            const videos = await this.crawler(pageUrl);
+            await this.crawler(pageUrl);
 
         }, { concurrency: 1 });
 
@@ -59,7 +61,9 @@ class Crawler {
         const filePath = path.join(folder, fileName);
         console.log(filePath);
 
-        await this.downloadFile(pageUrl, filePath);
+        if (!fs.existsSync(filePath)) {
+            await this.downloadFile(pageUrl, filePath);
+        }
 
         await this.downloadVideos(filePath);
     }
