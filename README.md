@@ -30,7 +30,7 @@ tail -f ~/crawler.log
 
 watch -n 1 ls -lht videoList/Adult/
 
-ps -aux | grep node
+ps aux | grep node
 ```
 
 ## warning
