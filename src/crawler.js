@@ -17,6 +17,8 @@ class Crawler {
 
     constructor () {
 
+        // https://github.com/YanG-1989/m3u
+        
         this.sources = [
             'https://raw.githubusercontent.com/YanG-1989/m3u/main/Adult.m3u'
         ];
